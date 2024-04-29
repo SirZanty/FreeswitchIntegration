@@ -42,7 +42,13 @@ using (var listener = new OutboundListener(8084))
           Console.WriteLine("var:" + socket.ChannelData.GetVariable("holagp"));
 
           await socket.ExecuteApplication(uuid, "answer");
-          await socket.Play(uuid, "/tmp/0ec62ba9-ceb7-4f70-bb8e-6d1adc70add8.mp3");
+
+          PlayGetDigitsOptions playDigitsOptions = new PlayGetDigitsOptions();
+          playDigitsOptions.PromptAudioFile = "/tmp/0ec62ba9-ceb7-4f70-bb8e-6d1adc70add8.mp3";
+
+
+          var digit = await socket.PlayGetDigits(uuid, playDigitsOptions);
+          Console.WriteLine("digit:" + digit);
           await socket.Hangup(uuid, HangupCause.NormalClearing);
       });
 
