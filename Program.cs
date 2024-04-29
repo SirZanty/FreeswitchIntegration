@@ -5,6 +5,7 @@ using FreeswitchIntegration;
 using Microsoft.Extensions.Logging;
 using NEventSocket;
 using NEventSocket.FreeSwitch;
+using Newtonsoft.Json;
 
 NEventSocket.Logging.Logger.Configure(new LoggerFactory());
 
@@ -48,7 +49,7 @@ using (var listener = new OutboundListener(8084))
 
 
           var digit = await socket.PlayGetDigits(uuid, playDigitsOptions);
-          Console.WriteLine("digit:" + digit);
+          Console.WriteLine("digit:" + JsonConvert.SerializeObject(digit));
           await socket.Hangup(uuid, HangupCause.NormalClearing);
       });
 
