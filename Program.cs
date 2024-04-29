@@ -39,8 +39,10 @@ using (var listener = new OutboundListener(8084))
           //tell FreeSwitch not to end the socket on hangup, we'll catch the hangup event and .Exit() ourselves
           await socket.Linger();
 
+          Console.WriteLine("var:" + socket.ChannelData.GetVariable("holagp"));
+
           await socket.ExecuteApplication(uuid, "answer");
-          await socket.Play(uuid, "misc/8000/misc-freeswitch_is_state_of_the_art.wav");
+          await socket.Play(uuid, "/tmp/audioFinal1.wav");
           await socket.Hangup(uuid, HangupCause.NormalClearing);
       });
 
