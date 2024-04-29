@@ -50,6 +50,14 @@ using (var listener = new OutboundListener(8084))
 
           var digit = await socket.PlayGetDigits(uuid, playDigitsOptions);
           Console.WriteLine("digit:" + JsonConvert.SerializeObject(digit));
+          if (digit.Digits=="1")
+          {
+              await socket.Play(uuid,"/tmp/1.mp3");
+          }
+          if (digit.Digits == "0")
+          {
+              await socket.Play(uuid, "/tmp/0.mp3");
+          }
           await socket.Hangup(uuid, HangupCause.NormalClearing);
       });
 
