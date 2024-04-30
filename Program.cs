@@ -40,7 +40,14 @@ using (var listener = new OutboundListener(8084))
                  Console.WriteLine("Events: " + x.EventName);
              });
 
-          
+
+          socket.ChannelEvents
+           .Where(x => x.EventName == EventName.ChannelHangupComplete && x.UUID == uuid)
+           .Subscribe(x => {
+               Console.WriteLine("Events: " + JsonConvert.SerializeObject(x));
+           });
+
+
 
 
 
