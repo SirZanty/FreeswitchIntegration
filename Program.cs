@@ -36,9 +36,7 @@ using (var listener = new OutboundListener(8084))
 
           socket.ChannelEvents
              .Subscribe(async x => {
-                 Console.WriteLine("Hangup Detected all on " + JsonConvert.SerializeObject(x));
-                 Console.WriteLine("Hangup Detected all on " + x.HangupCause);
-                 codigoError += x.HangupCause;
+                 Console.WriteLine("Events: " + x.EventName);
                  await socket.Exit();
              });
 
