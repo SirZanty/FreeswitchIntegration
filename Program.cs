@@ -61,4 +61,7 @@ using (var listener = new OutboundListener(8084))
     listener.Start();
 
     await Util.WaitForEnterKeyPress();
+
+
+    Console.WriteLine(codigoError);
 }
