@@ -21,6 +21,7 @@ using (var listener = new OutboundListener(8084))
           Console.WriteLine("OutboundSocket connected for channel " + uuid);
 
           await socket.SubscribeEvents(EventName.ChannelHangup);
+          await socket.SubscribeEvents(EventName.All);
 
           socket.ChannelEvents
               .Where(x => x.EventName == EventName.ChannelHangup && x.UUID == uuid)
