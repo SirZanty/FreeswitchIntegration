@@ -35,8 +35,6 @@ using (var listener = new OutboundListener(8084))
 
 
           socket.ChannelEvents
-             .Where(x => x.EventName == EventName.ChannelHangup)
-             .Take(1)
              .Subscribe(async x => {
                  Console.WriteLine("Hangup Detected all on " + JsonConvert.SerializeObject(x));
                  Console.WriteLine("Hangup Detected all on " + x.HangupCause);
