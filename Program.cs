@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 
 NEventSocket.Logging.Logger.Configure(new LoggerFactory());
 
+string codigoError = "";
+
 using (var listener = new OutboundListener(8084))
 {
     listener.Connections.Subscribe(
@@ -25,6 +27,8 @@ using (var listener = new OutboundListener(8084))
               .Take(1)
               .Subscribe(async x => {
                   Console.WriteLine("Hangup Detected on " + JsonConvert.SerializeObject(x));
+                  Console.WriteLine("Hangup Detected on " + x.HangupCause);
+                  codigoError += x.HangupCause;
                   await socket.Exit();
               });
 
@@ -51,6 +55,7 @@ using (var listener = new OutboundListener(8084))
               await socket.Play(uuid, "/tmp/0.mp3");
           }
           await socket.Hangup(uuid, HangupCause.NormalClearing);
+          codigoError += "16final";
       });
 
     listener.Start();
