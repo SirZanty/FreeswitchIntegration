@@ -15,9 +15,6 @@ using (var listener = new OutboundListener(8084))
       async socket => {
           await socket.Connect();
 
-          //after calling .Connect(), socket.ChannelData
-          //is populated with all the headers and variables of the channel
-
           var uuid = socket.ChannelData.Headers[HeaderNames.UniqueId];
           Console.WriteLine("OutboundSocket connected for channel " + uuid);
 
@@ -27,17 +24,12 @@ using (var listener = new OutboundListener(8084))
               .Where(x => x.EventName == EventName.ChannelHangup && x.UUID == uuid)
               .Take(1)
               .Subscribe(async x => {
-                  Console.WriteLine("Hangup Detected on " + x.UUID);
+                  Console.WriteLine("Hangup Detected on " + JsonConvert.SerializeObject(x));
                   await socket.Exit();
               });
 
-
-          //if we use 'full' in our FS dialplan, we'll get events for ALL channels in FreeSwitch
-          //this is not desirable here - so we'll filter in for our unique id only
-          //cases where this is desirable is in the channel api where we want to catch other channels bridging to us
           await socket.Filter(HeaderNames.UniqueId, uuid);
 
-          //tell FreeSwitch not to end the socket on hangup, we'll catch the hangup event and .Exit() ourselves
           await socket.Linger();
 
           Console.WriteLine("var:" + socket.ChannelData.GetVariable("holagp"));
@@ -63,6 +55,5 @@ using (var listener = new OutboundListener(8084))
 
     listener.Start();
 
-    Console.WriteLine("Press [Enter] to exit.");
     await Util.WaitForEnterKeyPress();
 }
